@@ -1,7 +1,7 @@
 # JS_modulePattern_ClassExample_private_public :mountain:
 
-JavaScript example-classes for orientation with private and public functions. <br>
-Integrated in a Module-Pattern. Well commented for better understanding. <br><br>
+JavaScript | The Module-Pattern | Two example-Classes with private and public functions. <br>
+Well commented for better understanding. <br><br>
 
 For bigger applications, the Module-Pattern should be integrated in the MVC-Pattern. 
 <br>
