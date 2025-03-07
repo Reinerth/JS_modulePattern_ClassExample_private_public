@@ -1,82 +1,171 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<title>Class Example | Module-Pattern | Not-Singleton</title>
-	<meta name="title" content="JS ClassExample with private and public functions">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="pragma" content="no-cache" />
-</head>
-<body>
-<script>
+    <head>
+        <title>Class Example | Module Pattern </title>
+        <meta name="title" content="JS Class-Example and Module-Pattern with private and public functions">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="pragma" content="no-cache" />
+    </head>
 
-    /**
-    * Class Example | Module-Pattern | Not-Singleton |
-    * 
-    * Definition of a class: Group of objects, functions and variables, commonly used (intersection).
-    * Definition of an object: Group of properties and their values (like JSON).
-    * 
-    * Thus, a "CSS-class" is usually an object, because it is a group of properties. **********************/
+    It might be easier to take a look in the console of the Developer Tools (F12)<br>
+    than try to explain the lemmings, they cant stop the flood with love ♥.
+
+    <body>
 
 
-   /**
-    * Author: Arthur Reinerth, 20210806, Cologne 
-    * 
-    * @function     {object}    ClassCustomer - An simple example-class with private and public functions.
-    * @param        {string}    firstname - The given firstname of a customer.
-    * @param        {string}    lastname - The given lastname of a customer.
-    * @variable     {object}    root - Private variable initialized with the scope of the class itself,
-    *                           for better readability of the "this"-scope of subclasses and functions.
-    * @variable     {string}    className - Public variable with the given name of the class 
-    *                           (Can be accessed from outside of the class, because it is public)
-    * @function     {object}    getInitials - Private function, returns the initials of firstname and lastname.
-    * @function     {object}    getCustomersDetails - Public function, returns complete information of the customer.
-    **/
+
+        <script>
+
+            /**
+            * Class Example | Module Pattern | 
+            * 
+            * Definition of a Class: Group of objects, functions and variables, commonly used (intersection).
+            * Definition of an Object: Group of properties and their values (like JSON).
+            * 
+            * Thus, a "CSS-class" is usually an object, because it is a group of properties. 
+            * (CSS-functions are only the values of their properties.)
+            */
 
 
-    'use strict'; /* Used traditional syntax and ES5, except "let". */
+            /**
+             * Author: Arthur Reinerth, 20250306, Duesseldorf 
+             * 
+             * For bigger applications, the Module-Pattern should be integrated in the MVC-Pattern. 
+             * You can find here a template: 
+             * https://github.com/Reinerth/Application-Template-MVC-best-Practice
+             */
 
 
-    let ClassCustomer = function (firstname, lastname){
-
-        /** This scope is directly executed with every instatiaton of the ClassCustomer ********************/
-        // alert('1');
-
-        let root = this;                                                    // private
-        root.className = 'ClassCustomer';                                   // public
-
-        root.letterCount = firstname.length + lastname.length;              // public
-        let fullName = firstname + ' ' + lastname;                          // private
-
-        /** The scope inside of functions are executed only, 
-            * if the functions are called explicitly by another statement *************************************/
-
-        // private
-        let getInitials = function(){
-            return firstname.charAt(0) + lastname.charAt(0);
-        };
-
-        // public
-        root.getCustomersDetails = function(){
-            let customerElement = fullName + ' [' + getInitials() + ']';
-            return customerElement;
-        };
-
-    };
+            "use strict"; /* Used traditional syntax and ES5, except "let". */
 
 
-    // Variables "otherCustomer", are initialized with an instantiation (new) of the class ClassCustomer
-    let otherCustomer1 = new ClassCustomer('Arthur-Daniel', 'Reinerth');    // Instance one
-    let otherCustomer2 = new ClassCustomer('Max', 'Mustermann');            // Instance two
+
+            // Reserve a single namespace "mainC" for the app, 
+            // acts like a container, wherein we add our classes.
+            window.mainC = {};
 
 
-    // console.log(otherCustomer1.getInitials());                           // No access because private
-    console.log(otherCustomer1.getCustomersDetails());                      // Access because public
-    console.log(otherCustomer2.getCustomersDetails());                      // Access because public
+            // We add some content (values) to the main-container 
+            // maybe retrieved from database, to be used from here from all classes.
+            window.mainC.wegetable = [
+                {"name":"Aubergine",    "color":"violet"},
+                {"name":"Beans",        "color":"green"},
+                {"name":"Broccoli",     "color":"green"},
+                {"name":"Champignons",  "color":"white"},
+                {"name":"Cucumber",     "color":"green"},
+                {"name":"Onion",        "color":"white"},
+                {"name":"Potatoes",     "color":"beige"},
+                {"name":"Pepper",       "color":"red"},
+                {"name":"Peas",         "color":"green"},
+                {"name":"Tomato",       "color":"red"}
+            ];
 
-    console.log(otherCustomer1.fullName);                                   // No access because private
-    console.log(otherCustomer1.letterCount);                                // Access because public
 
-</script>
-</body>
+            /** mySecondClass ********************************************************
+             * Constructing a class "mySecondClass" with private and public functions
+             * wherein we could use (call) the public functions 
+             * from other classes like "myFirstClass",
+             * even if they are not instantiated at that time,
+             * because our container "mainC" (applications name) is global.
+             * Means, we hoisted our container to window,
+             * so the functions are going to be executed 
+             * only after the window is loaded with the complete scripts.
+             * Works similar like the compiled files e.g. in C or JAVA. 
+             * In this way JavaScript is kind of precompiled for the browser.
+             * Note: Every class is a module.
+            */
+            window.mainC.mySecondClass= function (){
+
+                // Only for better readability (in bigger classes), 
+                // we initialize the scope ("this") of the class to a variable. 
+                // In case that inside the functions of this class, we also want to use 
+                // the scope of those functions with "this", 
+                // it can easier differentiated from the "this"-scope from the class.
+                let mainScope = this;
+
+
+                let randomVeggy = parseInt(Math.random()*10); // random number 0-9
+
+
+                // Private (can only be accessed from this class)
+                let getVeggyName = function(){
+                    return window.mainC.wegetable[randomVeggy].name;
+                };
+
+
+                // Private (can only be accessed from this class)
+                let getVeggyColor = function(){
+                    return window.mainC.wegetable[randomVeggy].color;
+                };
+
+
+                // Public (can be accessed from other classes)
+                mainScope.getVeggy = function(){
+
+                    let myVeggy = getVeggyName() + " ["+ getVeggyColor() +"]";
+
+                    return myVeggy;
+                };
+            };
+
+            // Variable "second", is initialized with an instantiation (new) of the class "mySecondClass"
+            let second = new window.mainC.mySecondClass();
+
+
+
+
+
+            /** myFirstClass ********************************************************
+             * Constructing a class "myFirstClass" with private and public functions
+             * wherein we could use (call) the public functions 
+             * from other classes like "mySecondClass",
+             * even if they are not instantiated at that time,
+             * because our container "mainC" (applications name) is global.
+             * Means, we hoisted our container to window,
+             * so the functions are going to be executed 
+             * only after the window is loaded with the complete scripts.
+             * Works similar like the compiled files e.g. in C or JAVA. 
+             * In this way JavaScript is kind of precompiled for the browser.
+             * Note: Every class is a module.
+            */
+            window.mainC.myFirstClass= function (){
+
+                let mainScope = this;
+
+                // Private (can only be accessed from this class)
+                let myFirstClassPrivateFunction = function(){
+
+                    let meGetMyValues = second.getVeggy(); // invoke function from other class
+
+                    console.log(meGetMyValues); // output
+                };
+
+
+                // Public (can be accessed from other classes)
+                mainScope.init = function(){
+                    myFirstClassPrivateFunction();
+                };
+            };
+
+            // Variable "first", is initialized with an instantiation (new) of the class "myFirstClass"
+            let first = new window.mainC.myFirstClass();
+
+
+
+
+            // Have a look at the app inside the window-object
+            console.log(mainC);
+
+
+
+
+            // Starting the application
+            first.init();
+
+
+
+
+        </script>
+    </body>
 </html>
