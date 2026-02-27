@@ -1,4 +1,4 @@
-# JS_modulePattern_ClassExample_private_public :mountain:
+# JS_modulePattern_ClassExample_private_public :mountain: 
 
 JavaScript | The Module-Pattern | Two example-Classes with private and public functions. <br>
 Well commented for better understanding. <br>
